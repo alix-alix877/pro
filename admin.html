@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم — البورتفوليو</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F3EE;
+    --card:#FFFFFF;
+    --ink:#1B1B1F;
+    --ink-dim:#6B6960;
+    --accent:#C98A4B;
+    --accent-ink:#ffffff;
+    --line:#E3E0D6;
+    --danger:#B4483A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    line-height:1.6;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:48px 20px 100px;}
+  h1{
+    font-family:'Fraunces', serif;
+    font-size:1.9rem;
+    margin:0 0 6px;
+  }
+  .sub{color:var(--ink-dim);margin-bottom:36px;font-size:.95rem;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:26px;
+    margin-bottom:28px;
+  }
+  .card h2{
+    font-family:'Fraunces', serif;
+    font-size:1.25rem;
+    margin:0 0 18px;
+  }
+  label{
+    display:block;
+    font-size:.88rem;
+    color:var(--ink-dim);
+    margin:14px 0 6px;
+  }
+  label:first-of-type{margin-top:0;}
+  input, textarea{
+    width:100%;
+    padding:11px 13px;
+    border:1px solid var(--line);
+    border-radius:7px;
+    font-family:inherit;
+    font-size:.95rem;
+    background:#FBFAF7;
+    color:var(--ink);
+  }
+  input:focus, textarea:focus{
+    outline:none;
+    border-color:var(--accent);
+  }
+  textarea{resize:vertical;min-height:70px;}
+
+  .btn{
+    display:inline-block;
+    background:var(--accent);
+    color:var(--accent-ink);
+    border:none;
+    padding:12px 22px;
+    border-radius:7px;
+    font-size:.95rem;
+    font-family:inherit;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:18px;
+  }
+  .btn:hover{opacity:.92;}
+  .btn.secondary{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--line);
+  }
+  .btn.danger{
+    background:transparent;
+    color:var(--danger);
+    border:1px solid var(--danger);
+    padding:6px 12px;
+    font-size:.82rem;
+    margin-top:0;
+  }
+
+  .msg{
+    display:none;
+    background:#E9F3EA;
+    border:1px solid #B7D9BA;
+    color:#2C5A30;
+    padding:10px 14px;
+    border-radius:7px;
+    font-size:.88rem;
+    margin-top:14px;
+  }
+  .msg.show{display:block;}
+
+  .project-item{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    background:var(--card);
+    cursor:grab;
+  }
+  .project-item.dragging{
+    opacity:.4;
+  }
+  .project-item.drag-over{
+    border-color:var(--accent);
+  }
+  .drag-handle{
+    color:var(--ink-dim);
+    font-size:1.1rem;
+    line-height:1;
+    padding-top:2px;
+    user-select:none;
+    cursor:grab;
+  }
+  .project-item .info{flex:1;min-width:0;}
+  .project-item .info b{font-size:1rem;}
+  .project-item .info p{
+    margin:4px 0 0;
+    color:var(--ink-dim);
+    font-size:.86rem;
+  }
+  .project-item .actions{
+    display:flex;
+    gap:8px;
+    flex-shrink:0;
+  }
+  .btn.edit{
+    background:transparent;
+    color:var(--accent);
+    border:1px solid var(--accent);
+    padding:6px 12px;
+    font-size:.82rem;
+    margin-top:0;
+  }
+  .empty-note{
+    color:var(--ink-dim);
+    font-size:.9rem;
+    text-align:center;
+    padding:20px 0;
+  }
+  .list-hint{
+    color:var(--ink-dim);
+    font-size:.82rem;
+    margin:-4px 0 14px;
+  }
+  .form-actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+
+  .download-box{
+    background:#FBF1E4;
+    border:1px solid #EAD3AC;
+    border-radius:8px;
+    padding:18px;
+    font-size:.9rem;
+    margin-top:8px;
+  }
+  .download-box ol{margin:10px 0 0;padding-inline-start:20px;}
+  .download-box li{margin-bottom:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>لوحة التحكم</h1>
+  <div class="sub">من هنا تُدخل معلوماتك وتضيف مشاريعك — كل شيء يُحفظ تلقائياً على هذا الجهاز.</div>
+
+  <!-- بطاقة المعلومات الشخصية -->
+  <div class="card">
+    <h2>معلوماتك الشخصية</h2>
+    <label>الاسم</label>
+    <input id="p-name" type="text" placeholder="مثال: أحمد محمد">
+
+    <label>المسمّى المهني</label>
+    <input id="p-title" type="text" placeholder="مثال: مطوّر واجهات أمامية">
+
+    <label>نبذة عنك</label>
+    <textarea id="p-bio" placeholder="اكتب فقرة قصيرة عن نفسك..."></textarea>
+
+    <label>رابط صورتك الشخصية (اختياري)</label>
+    <input id="p-avatar" type="text" placeholder="https://...">
+
+    <label>البريد الإلكتروني (اختياري)</label>
+    <input id="p-email" type="email" placeholder="name@example.com">
+
+    <label>رابط GitHub (اختياري)</label>
+    <input id="p-github" type="text" placeholder="https://github.com/username">
+
+    <label>رابط LinkedIn (اختياري)</label>
+    <input id="p-linkedin" type="text" placeholder="https://linkedin.com/in/username">
+
+    <button class="btn" onclick="saveProfile()">حفظ معلوماتي</button>
+    <div class="msg" id="profile-msg">تم الحفظ ✓</div>
+  </div>
+
+  <!-- بطاقة إضافة / تعديل مشروع -->
+  <div class="card">
+    <h2 id="project-form-title">إضافة مشروع جديد</h2>
+    <label>عنوان المشروع</label>
+    <input id="pr-title" type="text" placeholder="مثال: تطبيق إدارة المهام">
+
+    <label>وصف المشروع</label>
+    <textarea id="pr-desc" placeholder="وصف قصير لما يفعله المشروع..."></textarea>
+
+    <label>رابط المشروع (اختياري)</label>
+    <input id="pr-link" type="text" placeholder="https://...">
+
+    <label>رابط صورة المشروع (اختياري)</label>
+    <input id="pr-image" type="text" placeholder="https://...">
+
+    <div class="form-actions">
+      <button class="btn" id="project-submit-btn" onclick="submitProject()">إضافة المشروع</button>
+      <button class="btn secondary" id="project-cancel-btn" onclick="cancelEdit()" style="display:none;">إلغاء</button>
+    </div>
+    <div class="msg" id="project-msg">تمت الإضافة ✓</div>
+  </div>
+
+  <!-- بطاقة قائمة المشاريع -->
+  <div class="card">
+    <h2>مشاريعك الحالية</h2>
+    <div class="list-hint" id="list-hint" style="display:none;">اسحب المشاريع لإعادة ترتيبها كما ستظهر في موقعك.</div>
+    <div id="projects-list"></div>
+  </div>
+
+  <!-- بطاقة التصدير -->
+  <div class="card">
+    <h2>رفع التحديثات إلى موقعك</h2>
+    <p style="color:var(--ink-dim);font-size:.9rem;margin-top:0;">
+      كل تعديل يُحفظ الآن على هذا الجهاز فقط. لتظهر التعديلات في موقعك الفعلي على الإنترنت،
+      نزّل الملف الجديد وارفعه على GitHub.
+    </p>
+    <button class="btn secondary" onclick="downloadData()">تنزيل ملف البيانات (data.json)</button>
+    <div class="download-box">
+      بعد التنزيل:
+      <ol>
+        <li>افتح مستودع (repository) موقعك على GitHub</li>
+        <li>ادخل على ملف <b>data.json</b></li>
+        <li>اضغط على أيقونة القلم (Edit) في الأعلى</li>
+        <li>احذف كل المحتوى القديم، والصق محتوى الملف الجديد الذي نزّلته (افتحه بأي محرر نصوص)</li>
+        <li>اضغط <b>Commit changes</b> لحفظ التحديث</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'portfolio_data_v1';
+
+function getData(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw) return JSON.parse(raw);
+  return { profile: {}, projects: [] };
+}
+function setData(data){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadForm(){
+  const data = getData();
+  const p = data.profile || {};
+  document.getElementById('p-name').value = p.name || '';
+  document.getElementById('p-title').value = p.title || '';
+  document.getElementById('p-bio').value = p.bio || '';
+  document.getElementById('p-avatar').value = p.avatar || '';
+  document.getElementById('p-email').value = p.email || '';
+  document.getElementById('p-github').value = p.github || '';
+  document.getElementById('p-linkedin').value = p.linkedin || '';
+  renderProjectsList();
+}
+
+function saveProfile(){
+  const data = getData();
+  data.profile = {
+    name: document.getElementById('p-name').value.trim(),
+    title: document.getElementById('p-title').value.trim(),
+    bio: document.getElementById('p-bio').value.trim(),
+    avatar: document.getElementById('p-avatar').value.trim(),
+    email: document.getElementById('p-email').value.trim(),
+    github: document.getElementById('p-github').value.trim(),
+    linkedin: document.getElementById('p-linkedin').value.trim()
+  };
+  setData(data);
+  flash('profile-msg');
+}
+
+let editingId = null;
+
+function submitProject(){
+  const title = document.getElementById('pr-title').value.trim();
+  if(!title){ alert('الرجاء إدخال عنوان للمشروع'); return; }
+
+  const data = getData();
+  if(!data.projects) data.projects = [];
+
+  const fields = {
+    title: title,
+    description: document.getElementById('pr-desc').value.trim(),
+    link: document.getElementById('pr-link').value.trim(),
+    image: document.getElementById('pr-image').value.trim()
+  };
+
+  if(editingId !== null){
+    const idx = data.projects.findIndex(p => p.id === editingId);
+    if(idx !== -1) data.projects[idx] = { ...data.projects[idx], ...fields };
+  } else {
+    data.projects.unshift({ id: Date.now(), ...fields });
+  }
+
+  setData(data);
+  clearProjectForm();
+  cancelEdit();
+  flash('project-msg');
+  renderProjectsList();
+}
+
+function editProject(id){
+  const data = getData();
+  const p = (data.projects || []).find(p => p.id === id);
+  if(!p) return;
+
+  editingId = id;
+  document.getElementById('pr-title').value = p.title || '';
+  document.getElementById('pr-desc').value = p.description || '';
+  document.getElementById('pr-link').value = p.link || '';
+  document.getElementById('pr-image').value = p.image || '';
+
+  document.getElementById('project-form-title').textContent = 'تعديل المشروع';
+  document.getElementById('project-submit-btn').textContent = 'حفظ التعديلات';
+  document.getElementById('project-cancel-btn').style.display = 'inline-block';
+  document.getElementById('pr-title').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function cancelEdit(){
+  editingId = null;
+  document.getElementById('project-form-title').textContent = 'إضافة مشروع جديد';
+  document.getElementById('project-submit-btn').textContent = 'إضافة المشروع';
+  document.getElementById('project-cancel-btn').style.display = 'none';
+}
+
+function clearProjectForm(){
+  document.getElementById('pr-title').value = '';
+  document.getElementById('pr-desc').value = '';
+  document.getElementById('pr-link').value = '';
+  document.getElementById('pr-image').value = '';
+}
+
+function deleteProject(id){
+  if(!confirm('هل تريد حذف هذا المشروع؟')) return;
+  const data = getData();
+  data.projects = (data.projects || []).filter(p => p.id !== id);
+  setData(data);
+  if(editingId === id){ clearProjectForm(); cancelEdit(); }
+  renderProjectsList();
+}
+
+function renderProjectsList(){
+  const data = getData();
+  const list = data.projects || [];
+  const el = document.getElementById('projects-list');
+  const hint = document.getElementById('list-hint');
+
+  hint.style.display = list.length > 1 ? 'block' : 'none';
+
+  if(!list.length){
+    el.innerHTML = '<div class="empty-note">لم تضف أي مشروع بعد.</div>';
+    return;
+  }
+
+  el.innerHTML = list.map(p => `
+    <div class="project-item" draggable="true" data-id="${p.id}">
+      <span class="drag-handle">⠿</span>
+      <div class="info">
+        <b>${escapeHtml(p.title)}</b>
+        ${p.description ? `<p>${escapeHtml(p.description)}</p>` : ''}
+      </div>
+      <div class="actions">
+        <button class="btn edit" onclick="editProject(${p.id})">تعديل</button>
+        <button class="btn danger" onclick="deleteProject(${p.id})">حذف</button>
+      </div>
+    </div>
+  `).join('');
+
+  attachDragHandlers();
+}
+
+let dragSrcId = null;
+
+function attachDragHandlers(){
+  const items = document.querySelectorAll('.project-item');
+  items.forEach(item => {
+    item.addEventListener('dragstart', () => {
+      dragSrcId = Number(item.dataset.id);
+      item.classList.add('dragging');
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      items.forEach(i => i.classList.remove('drag-over'));
+    });
+    item.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      item.classList.add('drag-over');
+    });
+    item.addEventListener('dragleave', () => {
+      item.classList.remove('drag-over');
+    });
+    item.addEventListener('drop', (e) => {
+      e.preventDefault();
+      item.classList.remove('drag-over');
+      const targetId = Number(item.dataset.id);
+      if(dragSrcId === null || dragSrcId === targetId) return;
+      reorderProjects(dragSrcId, targetId);
+    });
+  });
+}
+
+function reorderProjects(srcId, targetId){
+  const data = getData();
+  const list = data.projects || [];
+  const srcIdx = list.findIndex(p => p.id === srcId);
+  const targetIdx = list.findIndex(p => p.id === targetId);
+  if(srcIdx === -1 || targetIdx === -1) return;
+
+  const [moved] = list.splice(srcIdx, 1);
+  list.splice(targetIdx, 0, moved);
+
+  data.projects = list;
+  setData(data);
+  renderProjectsList();
+}
+
+function downloadData(){
+  const data = getData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function flash(id){
+  const el = document.getElementById(id);
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+function escapeHtml(str){
+  return String(str || '').replace(/[&<>"']/g, m => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+}
+
+loadForm();
+</script>
+</body>
+</html>
