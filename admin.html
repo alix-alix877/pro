@@ -180,12 +180,55 @@
   }
   .download-box ol{margin:10px 0 0;padding-inline-start:20px;}
   .download-box li{margin-bottom:6px;}
+
+  .connect-status{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 14px;
+    border-radius:7px;
+    font-size:.88rem;
+    margin-bottom:16px;
+  }
+  .connect-status.connected{
+    background:#E9F3EA;
+    border:1px solid #B7D9BA;
+    color:#2C5A30;
+  }
+  .connect-status.disconnected{
+    background:#F5EFE6;
+    border:1px solid var(--line);
+    color:var(--ink-dim);
+  }
+  .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:currentColor;
+    flex-shrink:0;
+  }
+  .connect-status .clear-link{
+    margin-inline-start:auto;
+    color:var(--danger);
+    text-decoration:underline;
+    cursor:pointer;
+    font-size:.82rem;
+  }
+  .publish-msg{
+    display:none;
+    padding:10px 14px;
+    border-radius:7px;
+    font-size:.88rem;
+    margin-top:14px;
+  }
+  .publish-msg.show{display:block;}
+  .publish-msg.ok{background:#E9F3EA;border:1px solid #B7D9BA;color:#2C5A30;}
+  .publish-msg.err{background:#FBEAE7;border:1px solid #E4B7AC;color:#8A3324;}
+  .publish-msg.loading{background:#F5EFE6;border:1px solid var(--line);color:var(--ink-dim);}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>لوحة التحكم</h1>
-  <div class="sub">من هنا تُدخل معلوماتك وتضيف مشاريعك — كل شيء يُحفظ تلقائياً على هذا الجهاز.</div>
+  <div class="sub">أدخل معلوماتك وأضف مشاريعك، ثم انشرها مباشرة على موقعك بضغطة زر.</div>
 
   <!-- بطاقة المعلومات الشخصية -->
   <div class="card">
@@ -244,24 +287,20 @@
     <div id="projects-list"></div>
   </div>
 
-  <!-- بطاقة التصدير -->
+  <!-- بطاقة النشر المباشر -->
   <div class="card">
-    <h2>رفع التحديثات إلى موقعك</h2>
-    <p style="color:var(--ink-dim);font-size:.9rem;margin-top:0;">
-      كل تعديل يُحفظ الآن على هذا الجهاز فقط. لتظهر التعديلات في موقعك الفعلي على الإنترنت،
-      نزّل الملف الجديد وارفعه على GitHub.
-    </p>
-    <button class="btn secondary" onclick="downloadData()">تنزيل ملف البيانات (data.json)</button>
-    <div class="download-box">
-      بعد التنزيل:
-      <ol>
-        <li>افتح مستودع (repository) موقعك على GitHub</li>
-        <li>ادخل على ملف <b>data.json</b></li>
-        <li>اضغط على أيقونة القلم (Edit) في الأعلى</li>
-        <li>احذف كل المحتوى القديم، والصق محتوى الملف الجديد الذي نزّلته (افتحه بأي محرر نصوص)</li>
-        <li>اضغط <b>Commit changes</b> لحفظ التحديث</li>
-      </ol>
+    <h2>نشر التحديثات على موقعك</h2>
+
+    <div id="connect-status"></div>
+
+    <div id="connect-form" style="display:none;">
+      <label>رمز الوصول (Personal Access Token)</label>
+      <input id="gh-token" type="password" placeholder="github_pat_...">
+      <button class="btn" onclick="saveConnection()">ربط الحساب</button>
     </div>
+
+    <button class="btn" id="publish-btn" onclick="publishToGitHub()" style="display:none;">نشر التحديثات الآن</button>
+    <div class="publish-msg" id="publish-msg"></div>
   </div>
 </div>
 
@@ -461,6 +500,137 @@ function downloadData(){
   URL.revokeObjectURL(url);
 }
 
+// ===== الاتصال بـ GitHub =====
+const GH_OWNER = 'alix-alix877';
+const GH_REPO = 'pro';
+const GH_FILE_PATH = 'data.json';
+const GH_TOKEN_KEY = 'gh_token_v1';
+
+function getToken(){
+  return localStorage.getItem(GH_TOKEN_KEY) || '';
+}
+
+function saveConnection(){
+  const token = document.getElementById('gh-token').value.trim();
+  if(!token){ alert('الرجاء لصق الرمز (Token)'); return; }
+  localStorage.setItem(GH_TOKEN_KEY, token);
+  document.getElementById('gh-token').value = '';
+  renderConnectStatus();
+}
+
+function clearConnection(){
+  if(!confirm('هل تريد فصل الربط مع GitHub؟')) return;
+  localStorage.removeItem(GH_TOKEN_KEY);
+  renderConnectStatus();
+}
+
+function renderConnectStatus(){
+  const token = getToken();
+  const statusEl = document.getElementById('connect-status');
+  const formEl = document.getElementById('connect-form');
+  const publishBtn = document.getElementById('publish-btn');
+
+  if(token){
+    statusEl.innerHTML = `
+      <div class="connect-status connected">
+        <span class="dot"></span>
+        متصل بـ GitHub (${GH_OWNER}/${GH_REPO})
+        <span class="clear-link" onclick="clearConnection()">فصل الربط</span>
+      </div>`;
+    formEl.style.display = 'none';
+    publishBtn.style.display = 'inline-block';
+  } else {
+    statusEl.innerHTML = `
+      <div class="connect-status disconnected">
+        <span class="dot"></span>
+        غير متصل بعد
+      </div>`;
+    formEl.style.display = 'block';
+    publishBtn.style.display = 'none';
+  }
+}
+
+async function publishToGitHub(){
+  const token = getToken();
+  if(!token){ alert('الرجاء ربط الحساب أولاً'); return; }
+
+  const publishBtn = document.getElementById('publish-btn');
+  const msgEl = document.getElementById('publish-msg');
+
+  publishBtn.disabled = true;
+  showPublishMsg('loading', 'جاري النشر...');
+
+  try{
+    const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE_PATH}`;
+
+    // نجلب أولاً sha الملف الحالي (مطلوب من GitHub لتحديث ملف موجود)
+    const getRes = await fetch(apiUrl, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json'
+      }
+    });
+
+    let sha = undefined;
+    if(getRes.ok){
+      const fileInfo = await getRes.json();
+      sha = fileInfo.sha;
+    } else if(getRes.status !== 404){
+      const errBody = await getRes.json().catch(() => ({}));
+      throw new Error(errBody.message || `فشل الاتصال (${getRes.status})`);
+    }
+
+    const data = getData();
+    const content = JSON.stringify(data, null, 2);
+    const encodedContent = b64EncodeUnicode(content);
+
+    const putRes = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: 'تحديث بيانات البورتفوليو',
+        content: encodedContent,
+        sha: sha
+      })
+    });
+
+    if(!putRes.ok){
+      const errBody = await putRes.json().catch(() => ({}));
+      throw new Error(errBody.message || `فشل النشر (${putRes.status})`);
+    }
+
+    showPublishMsg('ok', 'تم نشر التحديثات على موقعك ✓ (قد يستغرق ظهورها دقيقة)');
+  } catch(err){
+    let friendly = err.message || 'حدث خطأ غير متوقع';
+    if(friendly.includes('Bad credentials')){
+      friendly = 'الرمز (Token) غير صحيح أو منتهي الصلاحية. افصل الربط وأعد إدخاله.';
+    }
+    showPublishMsg('err', 'تعذّر النشر: ' + friendly);
+  } finally {
+    publishBtn.disabled = false;
+  }
+}
+
+function showPublishMsg(type, text){
+  const msgEl = document.getElementById('publish-msg');
+  msgEl.className = 'publish-msg show ' + type;
+  msgEl.textContent = text;
+  if(type === 'ok'){
+    setTimeout(() => msgEl.classList.remove('show'), 5000);
+  }
+}
+
+function b64EncodeUnicode(str){
+  const utf8Bytes = new TextEncoder().encode(str);
+  let binary = '';
+  utf8Bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary);
+}
+
 function flash(id){
   const el = document.getElementById(id);
   el.classList.add('show');
@@ -474,6 +644,7 @@ function escapeHtml(str){
 }
 
 loadForm();
+renderConnectStatus();
 </script>
 </body>
 </html>
