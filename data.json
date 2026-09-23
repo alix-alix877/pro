@@ -1,20 +1,12 @@
 {
   "profile": {
-    "name": "احمد محمد",
-    "title": "مطور",
-    "bio": "مطور ويب",
+    "name": "",
+    "title": "",
+    "bio": "",
     "avatar": "",
     "email": "",
     "github": "",
     "linkedin": ""
   },
-  "projects": [
-    {
-      "id": 1790146198425,
-      "title": "موقع ويب",
-      "description": "ويب ويب",
-      "link": "",
-      "image": ""
-    }
-  ]
+  "projects": []
 }
