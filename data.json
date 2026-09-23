@@ -8,13 +8,5 @@
     "github": "https://github.com/objectclass67-ux",
     "linkedin": "https://www.linkedin.com/in/hadi-jdeed-167649381?utm_source=share_via&utm_content=profile&utm_medium=member_android"
   },
-  "projects": [
-    {
-      "id": 1790152722624,
-      "title": "Pizza Order",
-      "description": "المشروع عبارة عن تطبيق يمكن المستخدم من طلب بيتزا و تحديد Toppings إضافية\nتم التصميم عبر C#.Net + winforms",
-      "link": "",
-      "image": ""
-    }
-  ]
+  "projects": []
 }
