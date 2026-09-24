@@ -1,12 +1,12 @@
 {
   "profile": {
-    "name": "اسمك هنا",
-    "title": "مسمّاك المهني (مثال: مطوّر واجهات أمامية)",
-    "bio": "اكتب هنا نبذة قصيرة عنك، من أنت وماذا تعمل وماذا تحب أن تبني.",
-    "email": "",
-    "github": "",
-    "linkedin": "",
-    "avatar": ""
+    "name": "Hadi Jdeed",
+    "title": "Developer & Biomedical Engineer",
+    "bio": "I'm Student at programmingadvices.com | Biomedical Engineering",
+    "avatar": "https://raw.githubusercontent.com/alix-alix877/pro/main/images/1790241391864-1000320601.jpg",
+    "email": "hadijdeed4@gmail.com",
+    "github": "https://github.com/Hadi-Jdeed",
+    "linkedin": "https://www.linkedin.com/in/hadi-jdeed-167649381?utm_source=share_via&utm_content=profile&utm_medium=member_android"
   },
   "projects": [
     {
