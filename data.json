@@ -8,7 +8,15 @@
     "github": "https://github.com/objectclass67-ux",
     "linkedin": "https://www.linkedin.com/in/hadi-jdeed-167649381?utm_source=share_via&utm_content=profile&utm_medium=member_android"
   },
-  "projects": [],
+  "projects": [
+    {
+      "id": 1790237309319,
+      "title": "PIZZA project",
+      "description": "This is my app",
+      "link": "",
+      "image": ""
+    }
+  ],
   "theme": {
     "template": 10,
     "colors": {
