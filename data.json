@@ -8,5 +8,13 @@
     "linkedin": "",
     "avatar": ""
   },
-  "projects": []
+  "projects": [
+    {
+      "id": 1790240918235,
+      "title": "Pizza Order",
+      "description": "This is my first project",
+      "link": "https://alix-alix877.github.io/pro/",
+      "image": "https://raw.githubusercontent.com/alix-alix877/pro/main/images/1790240865156-1000323172.jpg"
+    }
+  ]
 }
