@@ -3,10 +3,18 @@
     "name": "Hadi Jdeed",
     "title": "Developer & Biomedical Engineer",
     "bio": "I am a biomedical engineering student and a student at ProgrammingAdvised.com, where I build and showcase projects.",
-    "avatar": "",
+    "avatar": "https://raw.githubusercontent.com/alix-alix877/pro/main/images/1790236957444-1000320601.jpg",
     "email": "hadijdeed4@gmail.com",
     "github": "https://github.com/objectclass67-ux",
     "linkedin": "https://www.linkedin.com/in/hadi-jdeed-167649381?utm_source=share_via&utm_content=profile&utm_medium=member_android"
   },
-  "projects": []
+  "projects": [],
+  "theme": {
+    "template": 10,
+    "colors": {
+      "bg": "#f5f5f7",
+      "ink": "#1d1d1f",
+      "accent": "#0071e3"
+    }
+  }
 }
