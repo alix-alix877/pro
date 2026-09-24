@@ -3,48 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>البورتفوليو</title>
+<title>PORTFOLIO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Noto+Kufi+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#EFEAE0;
-    --bg-raised:#FAF7F0;
-    --ink:#26261F;
-    --ink-dim:#7A7566;
-    --accent:#4A5D45;
-    --line:#DBD3C1;
+    --bg:#EDE7D9;
+    --bg-raised:#FBF8F1;
+    --ink:#282720;
+    --ink-dim:#7C7666;
+    --accent:#4E6B4A;
+    --accent-soft:#DDE6D6;
+    --line:#DDD3BC;
   }
   *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
   body{
     margin:0;
     background:var(--bg);
     color:var(--ink);
-    font-family:'Noto Kufi Arabic', sans-serif;
     line-height:1.75;
+    transition:background .3s, color .3s;
   }
   .wrap{
-    max-width:720px;
+    max-width:760px;
     margin:0 auto;
     padding:90px 24px 130px;
   }
+  img{max-width:100%;display:block;}
+
   header{
     display:flex;
     flex-direction:column;
     gap:16px;
-    margin-bottom:88px;
+    margin-bottom:80px;
   }
   .avatar{
-    width:72px;height:72px;border-radius:50%;
+    width:76px;height:76px;
     object-fit:cover;
-    border:2px solid var(--bg-raised);
-    box-shadow:0 0 0 1px var(--line);
   }
   h1{
-    font-family:'Fraunces', serif;
-    font-style:italic;
-    font-size:clamp(2.1rem,5vw,3rem);
-    font-weight:500;
     margin:0;
     letter-spacing:-0.01em;
   }
@@ -53,36 +51,27 @@
     font-size:1rem;
     font-weight:600;
     margin-top:2px;
-    text-transform:uppercase;
-    letter-spacing:.03em;
   }
   .bio{
     color:var(--ink-dim);
     font-size:1.02rem;
-    max-width:54ch;
+    max-width:56ch;
   }
   .links{
     display:flex;
     gap:10px;
-    margin-top:10px;
+    margin-top:12px;
     flex-wrap:wrap;
   }
   .links a{
     color:var(--ink);
     text-decoration:none;
     font-size:.85rem;
-    background:var(--bg-raised);
-    border:1px solid var(--line);
-    padding:7px 16px;
-    border-radius:100px;
-    transition:background .2s, border-color .2s;
+    transition:background .2s, border-color .2s, transform .15s, color .2s;
   }
-  .links a:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
 
   .section-label{
-    font-family:'Fraunces', serif;
     font-size:1.3rem;
-    font-weight:500;
     margin-bottom:6px;
   }
   .count{
@@ -92,19 +81,9 @@
   }
 
   .project{
-    background:var(--bg-raised);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:28px;
     margin-bottom:18px;
-    display:grid;
-    grid-template-columns:1fr;
-    gap:12px;
   }
   .project-title{
-    font-family:'Fraunces', serif;
-    font-size:1.3rem;
-    font-weight:500;
     margin:0;
   }
   .project-title a{
@@ -128,21 +107,18 @@
     text-decoration:none;
     font-weight:600;
   }
-  .project-link:hover{text-decoration:underline;}
   .project-img{
     width:100%;
     max-height:320px;
     object-fit:cover;
-    border-radius:8px;
-    border:1px solid var(--line);
   }
 
   .empty{
     color:var(--ink-dim);
-    padding:32px;
+    padding:36px;
     background:var(--bg-raised);
-    border:1px dashed var(--line);
-    border-radius:14px;
+    border:1.5px dashed var(--line);
+    border-radius:16px;
     font-size:.92rem;
     text-align:center;
   }
@@ -153,19 +129,145 @@
     font-size:.78rem;
     text-align:center;
   }
+
+  /* ============ أنماط القوالب العشرة ============ */
+
+  /* 1) أنيق كلاسيكي */
+  body.theme-1{ font-family:'Noto Kufi Arabic', sans-serif; }
+  body.theme-1 h1, body.theme-1 .project-title, body.theme-1 .section-label{ font-family:'Fraunces', serif; }
+  body.theme-1 h1{ font-style:italic; font-weight:500; font-size:clamp(2.1rem,5vw,3rem); }
+  body.theme-1 .role{ text-transform:uppercase; letter-spacing:.05em; }
+  body.theme-1 .avatar{ border-radius:50%; border:3px solid var(--bg-raised); box-shadow:0 0 0 1px var(--line); }
+  body.theme-1 .links a{ background:var(--bg-raised); border:1px solid var(--line); padding:8px 18px; border-radius:100px; }
+  body.theme-1 .links a:hover{ background:var(--accent); border-color:var(--accent); color:#fff; transform:translateY(-1px); }
+  body.theme-1 .project{ background:var(--bg-raised); border:1px solid var(--line); border-radius:16px; padding:30px; box-shadow:0 4px 18px -12px rgba(0,0,0,.18); transition:transform .25s, box-shadow .25s; }
+  body.theme-1 .project:hover{ transform:translateY(-2px); box-shadow:0 10px 28px -14px rgba(0,0,0,.28); }
+  body.theme-1 .project-title{ font-size:1.3rem; font-weight:500; }
+  body.theme-1 .project-link{ background:var(--accent-soft); padding:6px 14px; border-radius:100px; }
+  body.theme-1 .project-link:hover{ background:var(--accent); color:#fff; }
+  body.theme-1 .project-img{ border-radius:10px; border:1px solid var(--line); }
+
+  /* 2) مطبعي حاد */
+  body.theme-2{ font-family:'IBM Plex Sans Arabic', sans-serif; }
+  body.theme-2 h1, body.theme-2 .project-title{ font-family:'IBM Plex Sans Arabic', sans-serif; font-weight:700; }
+  body.theme-2 h1{ font-size:clamp(2.2rem,5vw,3.3rem); }
+  body.theme-2 .section-label{ font-weight:700; text-transform:uppercase; font-size:1rem; letter-spacing:.08em; }
+  body.theme-2 .avatar{ border-radius:6px; }
+  body.theme-2 .links a{ border-bottom:2px solid var(--line); padding-bottom:2px; }
+  body.theme-2 .links a:hover{ border-color:var(--accent); color:var(--accent); }
+  body.theme-2 .project{ border-top:2px solid var(--ink); padding:28px 0; }
+  body.theme-2 .project-title{ font-size:1.4rem; }
+  body.theme-2 .project-link{ border-bottom:2px solid var(--accent); }
+  body.theme-2 .project-img{ border-radius:2px; }
+
+  /* 3) دافئ ودود */
+  body.theme-3{ font-family:'Tajawal', sans-serif; }
+  body.theme-3 h1{ font-family:'Tajawal', sans-serif; font-weight:700; font-size:clamp(2rem,5vw,2.8rem); }
+  body.theme-3 .section-label{ font-family:'Tajawal', sans-serif; font-weight:700; }
+  body.theme-3 .avatar{ border-radius:28px; }
+  body.theme-3 .links a{ background:var(--accent-soft); padding:9px 20px; border-radius:14px; font-weight:500; }
+  body.theme-3 .links a:hover{ background:var(--accent); color:#fff; }
+  body.theme-3 .project{ background:var(--bg-raised); border-radius:24px; padding:32px; }
+  body.theme-3 .project-title{ font-weight:700; font-size:1.35rem; }
+  body.theme-3 .project-link{ background:var(--accent); color:#fff; padding:8px 18px; border-radius:14px; }
+  body.theme-3 .project-link:hover{ opacity:.85; }
+  body.theme-3 .project-img{ border-radius:16px; }
+
+  /* 4) مينيمال صارم */
+  body.theme-4{ font-family:'IBM Plex Sans Arabic', sans-serif; }
+  body.theme-4 h1{ font-weight:400; font-size:clamp(2rem,4.5vw,2.8rem); }
+  body.theme-4 .section-label{ font-weight:400; color:var(--ink-dim); font-size:.95rem; text-transform:uppercase; letter-spacing:.1em; }
+  body.theme-4 .avatar{ border-radius:0; }
+  body.theme-4 .links a{ padding:4px 0; }
+  body.theme-4 .links a:hover{ color:var(--accent); }
+  body.theme-4 .project{ border-bottom:1px solid var(--line); padding:22px 0; }
+  body.theme-4 .project-title{ font-weight:500; font-size:1.15rem; }
+  body.theme-4 .project-link{ text-decoration:underline; }
+  body.theme-4 .project-img{ border-radius:0; }
+
+  /* 5) مجلة أدبية */
+  body.theme-5{ font-family:'Noto Kufi Arabic', sans-serif; }
+  body.theme-5 h1, body.theme-5 .project-title{ font-family:'Fraunces', serif; font-weight:600; }
+  body.theme-5 h1{ font-size:clamp(2.4rem,6vw,3.6rem); }
+  body.theme-5 .section-label{ font-family:'Fraunces', serif; font-size:1.5rem; }
+  body.theme-5 .avatar{ border-radius:50%; }
+  body.theme-5 .links a{ text-decoration:underline; text-underline-offset:4px; }
+  body.theme-5 .links a:hover{ color:var(--accent); }
+  body.theme-5 .project{ display:grid; grid-template-columns:1fr; gap:16px; }
+  body.theme-5 .project-img{ border-radius:4px; max-height:400px; order:-1; }
+  body.theme-5 .project-title{ font-size:1.6rem; }
+  body.theme-5 .project-link{ font-size:.9rem; }
+
+  /* 6) لوحي تقني */
+  body.theme-6{ font-family:'IBM Plex Sans Arabic', sans-serif; }
+  body.theme-6 h1{ font-weight:600; }
+  body.theme-6 .role{ font-family:monospace; text-transform:none; letter-spacing:0; background:var(--accent-soft); padding:2px 8px; border-radius:4px; display:inline-block; }
+  body.theme-6 .avatar{ border-radius:8px; border:2px solid var(--ink); }
+  body.theme-6 .links a{ border:1.5px solid var(--ink); padding:6px 14px; border-radius:0; }
+  body.theme-6 .links a:hover{ background:var(--ink); color:var(--bg); }
+  body.theme-6 .project{ border:1.5px solid var(--ink); padding:24px; }
+  body.theme-6 .project-title{ font-weight:600; }
+  body.theme-6 .project-link{ font-family:monospace; }
+  body.theme-6 .project-img{ border-radius:0; border:1.5px solid var(--ink); }
+
+  /* 7) ناعم باستيلي */
+  body.theme-7{ font-family:'Tajawal', sans-serif; }
+  body.theme-7 h1{ font-weight:500; }
+  body.theme-7 .avatar{ border-radius:50%; box-shadow:0 8px 24px -10px rgba(0,0,0,.2); }
+  body.theme-7 .links a{ background:var(--bg-raised); padding:8px 20px; border-radius:100px; box-shadow:0 2px 8px -4px rgba(0,0,0,.15); }
+  body.theme-7 .links a:hover{ box-shadow:0 6px 16px -6px rgba(0,0,0,.25); transform:translateY(-2px); }
+  body.theme-7 .project{ background:var(--bg-raised); border-radius:28px; padding:32px; box-shadow:0 8px 30px -16px rgba(0,0,0,.2); }
+  body.theme-7 .project-img{ border-radius:20px; }
+  body.theme-7 .project-link{ background:var(--accent-soft); padding:6px 16px; border-radius:100px; }
+
+  /* 8) صحفي مضغوط */
+  body.theme-8{ font-family:'IBM Plex Sans Arabic', sans-serif; }
+  body.theme-8 h1{ font-weight:700; font-size:clamp(1.9rem,4.5vw,2.6rem); }
+  body.theme-8 .avatar{ border-radius:4px; }
+  body.theme-8 .links a{ font-weight:600; }
+  body.theme-8 .links a:hover{ color:var(--accent); }
+  body.theme-8 .project{ border:1px solid var(--line); padding:20px; border-radius:6px; display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start; }
+  body.theme-8 .project-img{ width:110px; height:110px; max-height:110px; border-radius:6px; }
+  body.theme-8 .project-title{ font-size:1.1rem; font-weight:700; }
+  body.theme-8 .project-desc{ font-size:.88rem; }
+
+  /* 9) داكن أنيق */
+  body.theme-9{ font-family:'Noto Kufi Arabic', sans-serif; background:#1B1B1F !important; color:#F2F0EA !important; }
+  body.theme-9 h1, body.theme-9 .project-title{ font-family:'Fraunces', serif; font-weight:500; color:#F2F0EA; }
+  body.theme-9 .bio, body.theme-9 .count, body.theme-9 .project-desc{ color:#A9A79F !important; }
+  body.theme-9 .avatar{ border-radius:50%; border:1px solid #38373D; }
+  body.theme-9 .links a{ color:#F2F0EA; border-bottom:1px solid #38373D; padding-bottom:2px; }
+  body.theme-9 .links a:hover{ border-color:var(--accent); color:var(--accent); }
+  body.theme-9 .project{ border-top:1px solid #38373D; padding:30px 0; }
+  body.theme-9 .project-title a{ color:#F2F0EA; }
+  body.theme-9 .project-img{ border-radius:4px; border:1px solid #38373D; }
+  body.theme-9 .empty{ background:#242429; border-color:#38373D; color:#A9A79F; }
+  body.theme-9 footer{ color:#A9A79F; }
+
+  /* 10) شبكي عصري */
+  body.theme-10{ font-family:'IBM Plex Sans Arabic', sans-serif; }
+  body.theme-10 .wrap{ max-width:920px; }
+  body.theme-10 h1{ font-weight:600; }
+  body.theme-10 .avatar{ border-radius:16px; }
+  body.theme-10 .links a{ background:var(--bg-raised); border:1px solid var(--line); padding:7px 16px; border-radius:8px; }
+  body.theme-10 .links a:hover{ border-color:var(--accent); color:var(--accent); }
+  body.theme-10 #projects{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  body.theme-10 .project{ background:var(--bg-raised); border:1px solid var(--line); border-radius:14px; padding:22px; margin-bottom:0; }
+  body.theme-10 .project-title{ font-size:1.1rem; font-weight:600; }
+  body.theme-10 .project-img{ border-radius:8px; max-height:160px; }
+  body.theme-10 .project-desc{ font-size:.88rem; }
+  @media (max-width:640px){
+    body.theme-10 #projects{ grid-template-columns:1fr; }
+  }
 </style>
 </head>
-<body>
+<body class="theme-1" id="page-body">
   <div class="wrap">
-    <header id="profile-header">
-      <!-- يُعبأ تلقائياً -->
-    </header>
-
+    <header id="profile-header"></header>
     <div class="section-label">المشاريع</div>
     <div class="count" id="project-count"></div>
     <div id="projects"></div>
-
-    <footer>يُحدَّث هذا الموقع تلقائياً من لوحة التحكم الخاصة به.</footer>
+    <footer>............</footer>
   </div>
 
 <script>
@@ -173,12 +275,63 @@ async function loadData(){
   try{
     const res = await fetch('data.json?_=' + Date.now());
     const data = await res.json();
+    applyTheme(data.theme);
     renderProfile(data.profile);
     renderProjects(data.projects || []);
   }catch(e){
     document.getElementById('projects').innerHTML =
       '<div class="empty">تعذّر تحميل البيانات. تأكد من وجود ملف data.json بجانب هذه الصفحة.</div>';
   }
+}
+
+function applyTheme(theme){
+  const body = document.getElementById('page-body');
+  const templateNum = (theme && theme.template) ? theme.template : 1;
+  for(let i = 1; i <= 10; i++){ body.classList.remove('theme-' + i); }
+  body.classList.add('theme-' + templateNum);
+
+  const colors = (theme && theme.colors) ? theme.colors : {};
+  const root = document.documentElement;
+  if(colors.bg) root.style.setProperty('--bg', colors.bg);
+  if(colors.ink) root.style.setProperty('--ink', colors.ink);
+  if(colors.accent) root.style.setProperty('--accent', colors.accent);
+
+  if(colors.bg){
+    root.style.setProperty('--bg-raised', lighten(colors.bg, 0.06));
+    root.style.setProperty('--line', darken(colors.bg, 0.12));
+  }
+  if(colors.ink){
+    root.style.setProperty('--ink-dim', mix(colors.ink, colors.bg || '#EDE7D9', 0.45));
+  }
+  if(colors.accent){
+    root.style.setProperty('--accent-soft', mix(colors.accent, '#ffffff', 0.75));
+  }
+}
+
+function hexToRgb(hex){
+  hex = hex.replace('#','');
+  if(hex.length === 3) hex = hex.split('').map(c => c+c).join('');
+  const num = parseInt(hex, 16);
+  return { r:(num>>16)&255, g:(num>>8)&255, b:num&255 };
+}
+function rgbToHex(r,g,b){
+  return '#' + [r,g,b].map(v => Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
+}
+function lighten(hex, amt){
+  const {r,g,b} = hexToRgb(hex);
+  return rgbToHex(r + (255-r)*amt, g + (255-g)*amt, b + (255-b)*amt);
+}
+function darken(hex, amt){
+  const {r,g,b} = hexToRgb(hex);
+  return rgbToHex(r*(1-amt), g*(1-amt), b*(1-amt));
+}
+function mix(hex1, hex2, weight){
+  const a = hexToRgb(hex1), b = hexToRgb(hex2);
+  return rgbToHex(
+    a.r*(1-weight) + b.r*weight,
+    a.g*(1-weight) + b.g*weight,
+    a.b*(1-weight) + b.b*weight
+  );
 }
 
 function renderProfile(p){
